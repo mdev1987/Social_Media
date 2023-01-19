@@ -9,11 +9,11 @@ export const registerUser = async (req, res) => {
             lastName,
             email,
             password,
-            picturePath,
             friends,
             location,
             occupation,
         } = req.body;
+        const { path: picturePath } = req.file || '';
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
         const newUser = new userModel({
@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
             lastName,
             email,
             password: passwordHash,
-            picturePath,
+            picturePath: picturePath?.slice('public/'.length) || '',
             friends,
             location,
             occupation,
@@ -30,7 +30,7 @@ export const registerUser = async (req, res) => {
         })
 
         await newUser.save();
-        user.password = undefined;
+        newUser.password = undefined;
         res.status(200).json(newUser);
 
     } catch (ex) {
