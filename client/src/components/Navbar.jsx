@@ -28,14 +28,7 @@ function Navbar() {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-  const fullName = (() => {
-    if (!user) return '';
-    const firstName = user.firstName.charAt(0).toUpperCase() +
-      user.firstName.slice(1)
-    const lastName = user.lastName.charAt(0).toUpperCase() +
-      user.lastName.slice(1);
-    return `${firstName} ${lastName}`
-  })()
+  const fullName = `${user?.firstName} ${user?.lastName}`
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -80,11 +73,12 @@ function Navbar() {
           <Message sx={{ fontSize: '25px' }} />
           <Notifications sx={{ fontSize: '25px' }} />
           <Help sx={{ fontSize: '25px' }} />
-          <FormControl variant="standard" value={fullName}>
+          <FormControl variant="standard">
             <Select value={fullName}
               sx={{
                 backgroundColor: neutralLight,
                 width: "150px",
+                textTransform: "capitalize",
                 borderRadius: "0.25rem",
                 p: "0.25rem 1rem",
                 "&: .MuiSvgIcon-root": {
@@ -97,7 +91,9 @@ function Navbar() {
               }}
               input={<InputBase />}>
               <MenuItem value={fullName}>
-                <Typography>{fullName}</Typography>
+                <Typography textTransform="capitalize">
+                  {fullName}
+                </Typography>
               </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
             </Select>
