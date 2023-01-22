@@ -6,4 +6,7 @@ export const REGISTER_API = `${HOST_ADDRESS}/auth/register`;
 
 
 // users api
-export const GET_USER = `${HOST_ADDRESS}/users`
+export const USERS = `${HOST_ADDRESS}/users`;
+
+// posts api
+export const POSTS = `${HOST_ADDRESS}/posts`;

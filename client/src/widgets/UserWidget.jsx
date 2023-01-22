@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import UserImage from "../components/UserImage";
 import FlexBetween from '../components/FlexBetween';
 import WidgetWrapper from "../components/WidgetWrapper";
-import { GET_USER } from "../consts/apiRoute";
+import { USERS } from "../consts/apiRoute";
 
 function UserWidget({ userId, picturePath }) {
 
@@ -23,7 +23,7 @@ function UserWidget({ userId, picturePath }) {
 
     useEffect(() => {
         const getUser = async () => {
-            const response = await fetch(`${GET_USER}/${userId}`, {
+            const response = await fetch(`${USERS}/${userId}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
