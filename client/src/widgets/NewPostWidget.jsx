@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPosts } from '../state'
+import { createPost, setPosts } from '../state'
 import FlexBetween from '../components/FlexBetween'
 import Dropzone from 'react-dropzone'
 import WidgetWrapper from '../components/WidgetWrapper'
@@ -25,14 +25,13 @@ function NewPostWidget({ picturePath }) {
     const dispath = useDispatch();
     const [isImage, setIsImage] = useState(false)
     const [image, setImage] = useState(null)
-    const [post, setPost] = useState("");
+    const [post, setPost] = useState("");    
     const { palette } = useTheme();
     const { _id } = useSelector((state) => state.user);
     const token = useSelector(state => state.token);
     const isNonMobileScreen = useMediaQuery("(min-width: 1000px)");
     const mediumMain = palette.neutral.mediumMain;
     const medium = palette.neutral.medium;
-
     const handlePost = async () => {
         const formData = new FormData();
         formData.append("userId", _id);
@@ -40,8 +39,7 @@ function NewPostWidget({ picturePath }) {
         if (image) {
             formData.append('image', image);
             // formData.append('picturePath', image.name)
-        }
-        console.log(formData)
+        }        
         const response = await fetch(POSTS, {
             method: 'POST',
             body: formData,
@@ -52,7 +50,7 @@ function NewPostWidget({ picturePath }) {
 
         if (response.ok) {
             const newPost = await response.json();
-            dispath(setPosts({ newPost }))
+            dispath(createPost({ post: newPost }))
             setImage(null);
             setPost("")
             return

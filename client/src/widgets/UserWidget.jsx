@@ -69,7 +69,7 @@ function UserWidget({ userId, picturePath }) {
                         </Typography>
                     </Box>
                 </FlexBetween>
-                <ManageAccountsOutlined />
+                <ManageAccountsOutlined sx={{ cursor: "pointer" }} />
             </FlexBetween>
             <Divider />
 
@@ -86,6 +86,9 @@ function UserWidget({ userId, picturePath }) {
                 <Box display="flex" alignItems="center" gap="1rem">
                     <WorkOutlineOutlined fontSize="large"
                         sx={{ color: main }} />
+                    <Typography color={medium}>
+                        {occupation}
+                    </Typography>
                 </Box>
             </Box>
 

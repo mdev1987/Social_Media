@@ -13,7 +13,7 @@ import Friend from '../components/Friend';
 import WidgetWrapper from '../components/WidgetWrapper';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPost } from '../state';
+import { patchLikePost } from '../state';
 import { POSTS, HOST_ADDRESS } from '../consts/apiRoute';
 
 function PostWidget({
@@ -49,9 +49,8 @@ function PostWidget({
         })
 
         if (response.ok) {
-            const likedPost = await response.json();
-            console.log(likedPost)
-            dispatch(setPost({ post: likedPost }))
+            const likedPost = await response.json();            
+            dispatch(patchLikePost({ post: likedPost }))
             return;
         }
         const error = await response.json();

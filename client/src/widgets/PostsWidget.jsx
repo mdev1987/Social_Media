@@ -52,7 +52,7 @@ function PostsWidget({ userId, isProfile = false }) {
     return (
         <>
            
-            {isProfile ?
+            {isProfile ? 
                 posts.map(({
                     _id,
                     description,
