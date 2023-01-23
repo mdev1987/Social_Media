@@ -25,7 +25,9 @@ export const getFeedPosts = async (req, res) => {
                 _id: 1,
                 firstName: 1,
                 lastName: 1,
-                picturePath: 1
+                picturePath: 1,
+                location: 1,
+                occupation: 1
             }).populate('comments', {
                 _id: 1,
                 firstName: 1,
@@ -40,7 +42,9 @@ export const getFeedPosts = async (req, res) => {
                 _id: 1,
                 firstName: 1,
                 lastName: 1,
-                picturePath: 1
+                picturePath: 1,
+                location: 1,
+                occupation: 1
             }).populate('comments', {
                 _id: 1,
                 firstName: 1,
@@ -65,7 +69,9 @@ export const getUserPosts = async (req, res) => {
                 _id: 1,
                 firstName: 1,
                 lastName: 1,
-                picturePath: 1
+                picturePath: 1,
+                location: 1,
+                occupation: 1
             }).lean();
         res.status(200).json(posts)
     } catch (err) {
@@ -80,11 +86,15 @@ export const likePost = async (req, res) => {
         const post = await postModel.findById(id);
         if (!post) return res.status(404).json({ message: 'Post not found' })
         if (post.likes.includes(userId)) {
-            await post.updateOne({ $pull: { likes: userId } })
+            const newPost = await postModel.findByIdAndUpdate(id,
+                { $pull: { likes: userId } }, { new: true })
+            res.status(200).json(newPost)
         } else if (!post.likes.includes(userId)) {
-            await post.updateOne({ $push: { likes: userId } })
+            const newPost = await postModel.findByIdAndUpdate(id,
+                { $push: { likes: userId } }, { new: true })
+            res.status(200).json(newPost)
         }
-        res.status(200).json(post)
+
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
