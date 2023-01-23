@@ -11,6 +11,15 @@ export const createPost = async (req, res) => {
             imagePath: imagePath?.slice('public/'.length) || ''
         })
         await newPost.save();
+
+        await newPost.populate('userId', {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            picturePath: 1,
+            location: 1,
+            occupation: 1
+        })
         res.status(200).json(newPost)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -53,7 +62,7 @@ export const getFeedPosts = async (req, res) => {
             }).lean();
 
         const posts = userPosts.concat(friendsPosts)
-            .sort((a, b) => a.createdAt - b.createdAt);
+            .sort((a, b) => b.createdAt - a.createdAt);
 
         res.status(200).json(posts)
     } catch (err) {
@@ -72,7 +81,7 @@ export const getUserPosts = async (req, res) => {
                 picturePath: 1,
                 location: 1,
                 occupation: 1
-            }).lean();
+            }).sort({ createdAt: -1 }).lean();
         res.status(200).json(posts)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -87,11 +96,11 @@ export const likePost = async (req, res) => {
         if (!post) return res.status(404).json({ message: 'Post not found' })
         if (post.likes.includes(userId)) {
             const newPost = await postModel.findByIdAndUpdate(id,
-                { $pull: { likes: userId } }, { new: true })
+                { $pull: { likes: userId } }, { new: true }).lean()
             res.status(200).json(newPost)
         } else if (!post.likes.includes(userId)) {
             const newPost = await postModel.findByIdAndUpdate(id,
-                { $push: { likes: userId } }, { new: true })
+                { $push: { likes: userId } }, { new: true }).lean();
             res.status(200).json(newPost)
         }
 
